@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class AdminFactory extends Factory
 {
-    // defined Model Class
+    // important: defined Model Class to work with user Model
     protected $model = User::class;
 
     /**

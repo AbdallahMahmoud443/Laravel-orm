@@ -41,4 +41,16 @@ class UserFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
+    /**
+     * Indicate that the model's Is_admin should be 1.
+     */
+    // hint: change of default value of is_admin to 1 when calling AdminAccount() method
+    public function AdminAccount(): static
+    {
+        return $this->state(
+            fn(array $attributes) => [
+                'is_admin' => 1,
+            ]
+        );
+    }
 }

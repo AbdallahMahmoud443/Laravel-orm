@@ -2,8 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 /**
@@ -51,6 +53,25 @@ class UserFactory extends Factory
             fn(array $attributes) => [
                 'is_admin' => 1,
             ]
-        );
+            // hint : work callback with this state only
+        )->afterMaking(function (User $user) {
+            Log::info('After making Admin Data');
+        })->afterCreating(function (User $user) {
+            Log::info('After making Admin Instance');
+        });
     }
+
+    /**
+     * Configure the model factory. First Way
+     */
+    // public function configure(): static
+    // {
+    //     // hint: afterMaking method calling after Create Fake Data
+    //     return $this->afterMaking(function (User $user) {
+    //         Log::info('After making');
+    //         // hint: afterCreating method calling after Create Fake instance
+    //     })->afterCreating(function (User $user) {
+    //         $user->update(['name' => 'Abdullah']);
+    //     });
+    // }
 }

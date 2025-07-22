@@ -17,9 +17,7 @@ class UserSeeder extends Seeder
     {
         // use factory state to change values of dummy data ,
         User::factory()
-            ->unverified()
             ->AdminAccount()
-            ->trashed()
             ->count(2)
             ->create();
     }

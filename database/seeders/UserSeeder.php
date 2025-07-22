@@ -6,6 +6,7 @@ use App\Models\User;
 use Carbon\Factory;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -35,5 +36,19 @@ class UserSeeder extends Seeder
         //     'is_admin' => '1',
         //     'name' => 'Ahmed'
         // ])->create();
+
+        // hint :create sequences of dummy data with state method
+        // User::factory()->count(3)
+        //     ->state(new Sequence(
+        //         ['is_admin' => '0',],
+        //         ['is_admin' => '1']
+        //     ))
+        //     ->create();
+
+        // hint :create sequences of dummy data with sequence method
+        // User::factory()->count(3)->sequence(
+        //     ['is_admin' => '0',],
+        //     ['is_admin' => '1']
+        // )->create();
     }
 }

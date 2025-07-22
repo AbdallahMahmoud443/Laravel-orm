@@ -15,10 +15,25 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // use factory state to change values of dummy data ,
-        User::factory()
-            ->AdminAccount()
-            ->count(2)
-            ->create();
+        // hint: override Attributes Before inserting it in database with create method
+        // User::factory()
+        //     ->count(1)
+        //     ->create([
+        //         'name' => 'Test User',
+        //         'is_admin' => '1'
+        //     ]);
+        // hint: override Attributes after creating fake  with make method
+        // $users = User::factory()
+        //     ->count(1)
+        //     ->make([
+        //         'name' => 'Test User',
+        //         'is_admin' => '1'
+        //     ]);
+        // dd($users);
+        // hint: override Attributes  with state method
+        // User::factory()->count(2)->state([
+        //     'is_admin' => '1',
+        //     'name' => 'Ahmed'
+        // ])->create();
     }
 }

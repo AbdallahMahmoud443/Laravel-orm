@@ -1,49 +1,39 @@
 <?php
 
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    // hint: firstOrCreate(condition,data) Method return first matched Instance or create new one if not found return Instance
-    // case 1 : condition => true (return Instance if found)
-    /*   $user = User::firstOrCreate(
-        ['email' => 'john@gmail.com'],
-        [
-            'name' => 'John Doe',
-            'email' => 'john@gmail.com',
-            'password' => '123456'
-        ]
-    );*/
-    // case 2 : condition => false
-    // important: create new Instance and save it in database
-    /*  $user = User::firstOrCreate(
-        ['email' => 'john11@gmail.com'],
-        [
-            'name' => 'John Doe',
-            'email' => 'john11@gmail.com',
-            'password' => '123456'
-        ]
-    );*/
-    // hint: firstOrNew(condition,data) Method return first matched Instance or create new one, doesn't save it in database if not found Instance
-    // case 1 : condition => true (return Instance if found)
-    $user = User::firstOrNew(
-        ['email' => 'john@gmail.com'],
-        [
-            'name' => 'John Doe',
-            'email' => 'john@gmail.com',
-            'password' => '123456'
-        ]
-    );
-    // case 2 : condition => false (create new Instance,then doesn't save it in database)
-    $user = User::firstOrNew(
-        ['email' => 'john11@gmail.com'],
-        [
-            'name' => 'John Doe',
-            'email' => 'john@gmail.com',
-            'password' => '123456'
-        ]
-    );
-    $user->save(); // important: save Instance in database (this is core deference between firstOrCreate and firstOrNew)
-    dump($user);
+    // title: Attribute Internal States
+    $user = User::find(1); // return Instance of User Model
+    // hint: isClean(attributes) checking  User Instance or it's attributes was changed or not before saving it in database
+    /**
+     * return => true if instance wasn't changed
+     * return => false if instance was changed
+     */
+    // dump($user->isClean()); // return true
+    // $user->name = 'Ali Ahmed';
+    // dump($user->isClean(['name'])); // return false
+    // dump($user->getOriginal('name')); // return value of name before update
+    //---------------------------------------------------------------//
+    // hint: isDirty(attributes) checking  User Instance or it's attributes was changed or not before saving it in database, it opposite of isClean()
+    /**
+     * return => true if instance was changed
+     * return => false if instance wasn't changed
+     */
+    // dump($user->isDirty()); // return false
+    // $user->name = 'Ali Ahmed';
+    // dump($user->isDirty(['name'])); // return true
+    //---------------------------------------------------------------//
+    // hint: wasChanged(attributes) checking  User Instance or it's attributes was changed or not after saving it in database
+    /**
+     * return => false if instance wasn't changed
+     * return => false if instance was changed and not save in database
+     * return => true if instance was changed and save in database
+     */
+    dump($user->wasChanged()); // return false
+    $user->name = 'Ali Ahmed';
+    dump($user->wasChanged(['name'])); // return false
+    $user->save();
+    dump($user->wasChanged(['name'])); // return true
 });

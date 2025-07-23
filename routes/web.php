@@ -4,13 +4,17 @@ use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    // title: all() vs get() methods in laravel orm
-    // hint: all() method returns a collection of all the records in the database, while get() method returns a collection of all the records that match the given conditions.
-    // hint: all() method is faster than get() method because it does not need to filter the records. However, get() method is more flexible because it allows you to pass conditions as parameters.
-    // hint: all() method is used when you want to retrieve all the records from the database, while get() method is used when you want to retrieve records that match certain conditions.
-    // Basic get() - no arguments
-    // $users = User::get();
-    // get() with specific columns
-    $users = User::where('is_admin', false)->get(['name', 'email']);
-    dd($users);
+    // title : select() & addSelect() methods
+    // hint: select($attributes) method is used to select specific columns from the table
+    // hint: addSelect($attributes) method is used to add additional columns to the selected columns
+    // hint: select('*') method is used to select all columns from the table
+    // hint: addSelect('*') method is used to add all columns to the selected columns
+    //  $users = User::select('name', 'email')->addSelect('created_at')->get();
+    $users = User::where('is_admin', true)->select('name as username', 'email as userEmail')->addSelect('created_at')->get();
+    // select($attributes) vs get($attributes)
+    // select($attributes) method returns a collection of objects with the specified attributes
+    // get($attributes) method returns a collection of objects with all attributes
+    // select($attributes) method is faster than get($attributes) method
+    // select($attributes) method is used to select specific columns from the table
+    dump($users);
 });

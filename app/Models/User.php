@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
+use Ramsey\Uuid\Uuid;
 
 class User extends Authenticatable
 {
@@ -52,5 +54,27 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Generate a new unique key for the model.
+     *
+     * @return string
+     */
+    public function newUniqueId()
+    {
+        // hint: you can change versions of uuid
+        // 1-uuid 1 to 7
+        return (string) Uuid::uuid4();
+    }
+    /**
+     * Generate more that uuids in one table
+     *
+     * @return string
+     */
+
+    public function uniqueIds()
+    {
+        return ['id', 'access']; // return array of columns name
     }
 }

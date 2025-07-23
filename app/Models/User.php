@@ -3,23 +3,16 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-// important: php artisan model:show User
-use Database\Factories\AdminFactory;
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Str;
-use Ramsey\Uuid\Uuid;
+
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    // hint : use HasUuids Trait to generate uuid values for each column
-    // hint: Uuids important for Security and merging of tables
-    use HasFactory, Notifiable, SoftDeletes, HasUlids;
+    use HasFactory, Notifiable, SoftDeletes;
     /**
      * The attributes that are mass assignable.
      *
@@ -37,10 +30,10 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    /**
-     * need to add this line when table not match convention of laravel
-     */
-    // code: protected $table = 'users';
+    // code: public $timestamps = false; // ignore Timestamps
+    // hint: to change name columns of timestamp
+    const CREATED_AT = 'created';
+    const UPDATED_AT = 'updated';
 
 
     /**
@@ -54,16 +47,5 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    /**
-     * Generate more that ulids in one table
-     *
-     * @return string
-     */
-
-    public function uniqueIds()
-    {
-        return ['id', 'access']; // return array of columns name
     }
 }

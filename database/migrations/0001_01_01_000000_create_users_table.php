@@ -20,8 +20,7 @@ return new class extends Migration
             $table->string('is_admin')->default(0);
             $table->rememberToken();
             $table->softDeletes();
-            $table->timestamp('created');
-            $table->timestamp('updated');
+            $table->timestamps();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

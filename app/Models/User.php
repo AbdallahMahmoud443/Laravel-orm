@@ -30,11 +30,12 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    // code: public $timestamps = false; // ignore Timestamps
-    // hint: to change name columns of timestamp
-    const CREATED_AT = 'created';
-    const UPDATED_AT = 'updated';
-
+    // hint: override default value of is_admin in migration file in model like below code
+    // important: override only new records, old record doesn't change (default value)
+    // hint: usage when override default value of certain column in feature
+    protected $attributes = [
+        'is_admin' => '100'
+    ];
 
     /**
      * Get the attributes that should be cast.

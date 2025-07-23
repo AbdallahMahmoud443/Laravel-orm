@@ -9,16 +9,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 
-class User extends Authenticatable
+class User extends BaseModel
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, SoftDeletes;
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $guarded = [];
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -28,13 +23,6 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-    ];
-
-    // hint: override default value of is_admin in migration file in model like below code
-    // important: override only new records, old record doesn't change (default value)
-    // hint: usage when override default value of certain column in feature
-    protected $attributes = [
-        'is_admin' => '100'
     ];
 
     /**

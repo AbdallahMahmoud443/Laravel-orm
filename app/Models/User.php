@@ -33,6 +33,12 @@ class User extends Authenticatable
     ];
 
     /**
+     * need to add this line when table not match convention of laravel
+     */
+    // code: protected $table = 'users';
+
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

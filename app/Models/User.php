@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 // important: php artisan model:show User
 use Database\Factories\AdminFactory;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -18,8 +19,7 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     // hint : use HasUuids Trait to generate uuid values for each column
     // hint: Uuids important for Security and merging of tables
-    use HasFactory, Notifiable, SoftDeletes, HasUuids;
-
+    use HasFactory, Notifiable, SoftDeletes, HasUlids;
     /**
      * The attributes that are mass assignable.
      *
@@ -57,18 +57,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Generate a new unique key for the model.
-     *
-     * @return string
-     */
-    public function newUniqueId()
-    {
-        // hint: you can change versions of uuid
-        // 1-uuid 1 to 7
-        return (string) Uuid::uuid4();
-    }
-    /**
-     * Generate more that uuids in one table
+     * Generate more that ulids in one table
      *
      * @return string
      */

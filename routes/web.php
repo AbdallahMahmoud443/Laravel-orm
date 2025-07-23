@@ -5,32 +5,45 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    // hint: updateOrCreate(condition,data) return Instance (Work With eloquent ORM)
-    /**
-     * Condition => True  Update Instance
-     * Condition => False Create Instance
-     */
-    // important: take care about non-nullable fields
-
-    // case 1 : Condition => false (create new Instance (John Doe Updated,john5@gmail.com))
-    /*  $user = User::updateOrCreate(['email' => 'john5@gmail.com'], [
-        'name' => 'John Doe Updated',
-        'password' => '12345678'
-    ]);*/
-
-    // case 2 : Condition => True (Update Instance)
-    /* $user = User::updateOrCreate(['email' => 'john5@gmail.com'], [
-        'name' => 'John Doe',
-    ]);*/
-    // hint: updateOrInsert(condition,data) return boolean  (Work With Query Builder and eloquent ORM)
-    // important prefer use updateOrInsert() with Query Builder, as same as updateOrCreate() In Usage
-    // note: return true with (update or insert), false when not do operating
-    // case 2 : Condition => True (Update Instance)
-    $user = DB::table('users')->updateOrInsert(['email' => 'john7@gmail.com'], [
-        'name' => 'John Doe',
-        'password' => '12345678' // with create should provide password because it isn't nullable field
-
-    ]);
-    // case 1 : Condition => false (create new Instance (John Doe Updated,john7@gmail.com))
+    // hint: firstOrCreate(condition,data) Method return first matched Instance or create new one if not found return Instance
+    // case 1 : condition => true (return Instance if found)
+    /*   $user = User::firstOrCreate(
+        ['email' => 'john@gmail.com'],
+        [
+            'name' => 'John Doe',
+            'email' => 'john@gmail.com',
+            'password' => '123456'
+        ]
+    );*/
+    // case 2 : condition => false
+    // important: create new Instance and save it in database
+    /*  $user = User::firstOrCreate(
+        ['email' => 'john11@gmail.com'],
+        [
+            'name' => 'John Doe',
+            'email' => 'john11@gmail.com',
+            'password' => '123456'
+        ]
+    );*/
+    // hint: firstOrNew(condition,data) Method return first matched Instance or create new one, doesn't save it in database if not found Instance
+    // case 1 : condition => true (return Instance if found)
+    $user = User::firstOrNew(
+        ['email' => 'john@gmail.com'],
+        [
+            'name' => 'John Doe',
+            'email' => 'john@gmail.com',
+            'password' => '123456'
+        ]
+    );
+    // case 2 : condition => false (create new Instance,then doesn't save it in database)
+    $user = User::firstOrNew(
+        ['email' => 'john11@gmail.com'],
+        [
+            'name' => 'John Doe',
+            'email' => 'john@gmail.com',
+            'password' => '123456'
+        ]
+    );
+    $user->save(); // important: save Instance in database (this is core deference between firstOrCreate and firstOrNew)
     dump($user);
 });

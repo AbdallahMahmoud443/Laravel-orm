@@ -1,14 +1,16 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    // title: count() method in  work with (collections)
-    // description: The count() method in Laravel is a convenient way to get the number of records in a database table. It returns the count of the records that match the given conditions, or all the records if no conditions are specified.
-    // example: Get the count of all users
-    $all_users_count = User::count();
-    $admins_count = User::where('is_admin', true)->count();
-    $users_count = User::where('is_admin', false)->count();
-    dump($all_users_count, $admins_count, $users_count);
+    // title: sum($attribute) method in laravel work with (collections)
+    // description: sum($attribute) method in laravel work with (collections) and it return the sum of the attribute value in the collection
+    $total_withdraw = User::sum('withdraw');
+    $total_withdraw_admins = User::where('is_admin', 1)->sum('withdraw');
+    $total_deposit_users = User::where('is_admin', 0)->sum('deposit');
+    // hint: sum(raw query)
+    $total_withdraw_and_deposit = User::sum(DB::raw('deposit + withdraw'));
+    dump($total_withdraw, $total_withdraw_admins, $total_deposit_users, $total_withdraw_and_deposit);
 });

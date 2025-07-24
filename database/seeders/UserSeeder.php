@@ -52,7 +52,11 @@ class UserSeeder extends Seeder
         // )->create();
 
         User::factory()
-            ->count(1)
+            ->count(10)
+            ->state(new Sequence(
+                ['is_admin' => '0',],
+                ['is_admin' => '1']
+            ))
             ->create();
     }
 }

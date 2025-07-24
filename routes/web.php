@@ -5,15 +5,32 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    // title :  when(condition, callback=>true, callback=>false) method in laravel orm
-    // description : The when method allows you to conditionally run a query clause such as where, orWhere, having, or orWhereHaving. The callback provided to the when method will receive the query builder instance, allowing you to add additional constraints to the query.
-    // hint: when method is useful when you want to add a condition to a query based on a variable value. For example, you can use the when method to add a where clause to a query only if a certain condition is true.
-    // usage in filtering
-    $is_admin = 1;
-    $users = User::when($is_admin == 1, function ($q) use ($is_admin) {
-        return $q->where('is_admin', $is_admin);
-    }, function ($q) use ($is_admin) {
-        return $q->where('is_admin', $is_admin);
-    })->get();
-    dump($users);
+    // title: whenEmpty(callback=>true,callback=>false) vs whenNotEmpty(callback=>true,callback=>false) in laravel
+    // description:  whenEmpty() and whenNotEmpty() are methods provided by the Laravel framework to conditionally display content based on the presence or absence of data in a collection or variable.
+    // important working with collection
+    $users = User::whereNull('name')->get(); // return data
+    $emails = User::whereNull('email')->get(); // return empty collection
+    // hint: whenEmpty()
+    $users->whenEmpty(function () {
+        dump('Collection is empty');
+    }, function () {
+        dump('Collection is not empty'); // print this
+    });
+    $emails->whenEmpty(function () {
+        dump('Collection is empty'); // print this
+    }, function () {
+        dump('Collection is not empty');
+    });
+
+    // hint: whenNotEmpty()
+    $users->whenNotEmpty(function () {
+        dump('Collection is not empty'); // print this
+    }, function () {
+        dump('Collection is empty');
+    });
+    $emails->whenNotEmpty(function () {
+        dump('Collection is Not empty');
+    }, function () {
+        dump('Collection is empty'); // print this
+    });
 });

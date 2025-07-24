@@ -5,22 +5,23 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    // title: whereColumn()
-    // description: whereColumn() is a method in Laravel that allows you to add a condition to a query based on a column in a related table. It is used to compare a column in the current table with a column in a related table.
-    // first usage whereColumnName() in Laravel
-    $user = User::whereId(1)->get();
-    $Admins = User::whereIsAdmin(1)->get();
-    $name_null = User::whereName(null)->get();
-
-    dump(
-        $user,
-        $Admins,
-        $name_null,
-    );
-    // important this method important to use in the case of the relationship between two tables
-    // second usage whereColumnName() in Laravel to compare a column in the current table with a column in a related table.
-    $users = User::whereColumn('deposit', '>', 'withdraw')
-        ->get();
-    dump($users);
-    // whereColumn() is particularly useful for data integrity checks, business rule enforcement, and complex filtering scenarios where you need to compare values within the same row or across related tables.
+    // title: whereDay() vs whereMonth() vs whereYear() vs whereDate()
+    // description: these methods are used to filter the data based on the date.
+    // hint: whereDate()
+    // $users_1 = User::whereDate('created_at', '2023-06-21')->get();
+    // $users_2 = User::whereDate('created_at', '>', '2002-04-14')->get();
+    // $users_3 = User::whereDate('created_at', '<', '2002-04-14')->get();
+    // hint: whereDay()
+    // $users_1 = User::whereDay('created_at', '21')->get();
+    // $users_2 = User::whereDay('created_at', '>', '14')->get();
+    // $users_3 = User::whereDay('created_at', '<', '14')->get();
+    // hint: whereMonth()
+    // $users_1 = User::whereMonth('created_at', '3')->get();
+    // $users_2 = User::whereMonth('created_at', '>', '08')->get();
+    // $users_3 = User::whereMonth('created_at', '<', '5')->get();
+    // hint: whereYear()
+    $users_1 = User::whereYear('created_at', '2000')->get();
+    $users_2 = User::whereYear('created_at', '>', '2005')->get();
+    $users_3 = User::whereYear('created_at', '<', '2019')->get();
+    dump($users_1, $users_2, $users_3);
 });

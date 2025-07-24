@@ -5,14 +5,22 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    // title: firstWhere(condition or conditions)
-    // description: get the first record that matches the condition.
-    // $user = User::where('is_admin', 1)->first(); // get the first record that matches the condition.
-    $user = User::firstWhere('is_admin', 1); // get the first record that matches the condition.
-    // with multiple conditions
-    $user_1 = User::firstWhere([
-        ['is_admin', 1],
-        ['deposit', '>', 2000]
-    ]);
-    dump($user, $user_1);
+    // title: whereColumn()
+    // description: whereColumn() is a method in Laravel that allows you to add a condition to a query based on a column in a related table. It is used to compare a column in the current table with a column in a related table.
+    // first usage whereColumnName() in Laravel
+    $user = User::whereId(1)->get();
+    $Admins = User::whereIsAdmin(1)->get();
+    $name_null = User::whereName(null)->get();
+
+    dump(
+        $user,
+        $Admins,
+        $name_null,
+    );
+    // important this method important to use in the case of the relationship between two tables
+    // second usage whereColumnName() in Laravel to compare a column in the current table with a column in a related table.
+    $users = User::whereColumn('deposit', '>', 'withdraw')
+        ->get();
+    dump($users);
+    // whereColumn() is particularly useful for data integrity checks, business rule enforcement, and complex filtering scenarios where you need to compare values within the same row or across related tables.
 });

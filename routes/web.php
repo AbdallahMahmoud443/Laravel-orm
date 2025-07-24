@@ -5,16 +5,14 @@ use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    // title orderBy(attribute,mode) & orderByRaw(RawSQL) in laravel
-    // description: orderBy() & orderByRaw() in laravel are used to sort the data in the database.
-    // hint: orderBy() is used to sort the data in ascending order by default.
-    // hint: orderByRaw() is used to sort the data in ascending or descending order by using raw SQL query.
+    // title latest(attribute) & oldest(attribute) in laravel
+    // description: latest(attribute) & oldest(attribute) in laravel are used to get the latest and oldest record from the database.
+    // hint: latest(attribute) is used to get the latest record from the database. (desc)
+    // hint: oldest(attribute) is used to get the oldest record from the database. (asc)
+    // title orderBy() & orderByRaw() in laravel (latest & oldest &orderByDesc & orderByRaw put) After any condition
     // example:
-    $users = User::orderBy('deposit', 'asc')->pluck('deposit', 'name')->toArray();
+    $users = User::latest('deposit')->pluck('deposit', 'name')->toArray();
     dump($users);
-    $users = User::orderByRaw('deposit desc')->pluck('deposit', 'name')->toArray();
-    dump($users);
-    // if i need arrange data based on the number of characters in the name
-    $users = User::orderByRaw('length(name) desc')->pluck('deposit', 'name')->toArray();
+    $users = User::oldest('deposit')->pluck('deposit', 'name')->toArray();
     dump($users);
 });

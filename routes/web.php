@@ -5,15 +5,16 @@ use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    // title: with(RelationName) method in laravel Orm
-    // description: The with() method is used to eager load a relationship. It allows you to load a related model or models at the same time as the main model. This can improve performance by reducing the number of database queries needed to retrieve related data.
-    // case: if I need to retrieve the user and its posts at the same time, I can use the with() method to load the posts relationship when retrieving the user.
-    $users = User::with('posts')->get();
-    // case: if i need to retrieve the user and it's posts that has likes more than 300
-    $users = User::with([
-        'posts' => function ($q) {
-            $q->where('likes', '>', 300)->latest('likes'); // put condition on data returned from relations
-        }
-    ])->get();
+    // title: has() & doesntHave() method in laravel Orm
+    // hint: has() method is used to filter the records that have a relationship with the given condition
+    // hint: doesntHave() method is used to filter the records that do not have a relationship with the given condition
+    // case : if I need to retrieve all users that have a posts, I can use the has() method like this:
+    $users = User::has('posts')->get();
+    dump($users);
+    // case : if I need to retrieve all users that do not have a posts, I can use the doesntHave() method like this:
+    $users = User::doesntHave('posts')->get();
+    dump($users);
+    // case : if I need to retrieve all users that have a posts and the posts count is greater than 2, I can use the has() method like this:
+    $users = User::has('posts', '>=', 3)->get();
     dump($users);
 });

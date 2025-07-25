@@ -14,7 +14,4 @@ class BaseModel extends Model
      * @var list<string>
      */
     protected $guarded = [];
-
-    const CREATED_AT = 'created';
-    const UPDATED_AT = 'updated';
 }

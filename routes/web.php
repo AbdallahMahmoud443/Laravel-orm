@@ -5,31 +5,15 @@ use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    // title : take() vs limit()
-    // description: take() will return all the records from the database while limit() will return only the specified number of records from the database.
-    // hint: take() is faster than limit() because it does not need to count the total number of records in the database.
-    // hint: take() is more flexible than limit() because it can take negative values and it can be used with collections.
-    // hint: limit() is more efficient than take() because it does not need to load all the records from the database into memory.
-    $users_1 = User::take(5)->get();
-    $users_2 = User::limit(5)->get();
-    dump($users_1, $users_2);
-    /**
-     * Use take() when:
-        Working with Collections (only option)
-        Need negative values (take from end)
-        Want consistent API across collections and queries
-        Laravel/Eloquent focused development
-    Use limit() when:
-        pure SQL mindset (more familiar to SQL developers)
-        Working only with Query Builder
-        Team preference for SQL-like syntax
-        Database-specific operations
-     */
-    // title : skip() vs offset()
-    // description: skip() will skip the specified number of records from the beginning of the result set while offset() will skip the specified number of records from the end of the result set.
-    // hint : offset() is more efficient than skip() when you want to skip a large number of records.
-    // hint : skip() is more efficient than offset() when you want to skip a small number of records.
-    $users_1 = User::skip(3)->take(5)->get();
-    $users_2 = User::offset(3)->limit(5)->get();
-    dump($users_1, $users_2);
+    // title: with(RelationName) method in laravel Orm
+    // description: The with() method is used to eager load a relationship. It allows you to load a related model or models at the same time as the main model. This can improve performance by reducing the number of database queries needed to retrieve related data.
+    // case: if I need to retrieve the user and its posts at the same time, I can use the with() method to load the posts relationship when retrieving the user.
+    $users = User::with('posts')->get();
+    // case: if i need to retrieve the user and it's posts that has likes more than 300
+    $users = User::with([
+        'posts' => function ($q) {
+            $q->where('likes', '>', 300)->latest('likes'); // put condition on data returned from relations
+        }
+    ])->get();
+    dump($users);
 });

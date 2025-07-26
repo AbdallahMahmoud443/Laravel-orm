@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('title');
             $table->integer('likes');
             $table->integer('views');
+            $table->softDeletes(); // add this column belong to soft delete
             $table->timestamps();
         });
     }

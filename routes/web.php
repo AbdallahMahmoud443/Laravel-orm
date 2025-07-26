@@ -2,18 +2,36 @@
 
 use App\Models\Post;
 use App\Models\User;
-use Illuminate\Support\Facades\Artisan;
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    // finally to run pruning functionality we need to run this command in terminal
+    // title: replicating
+    // description : replicating is something that is done to copy something exactly as the original
+    // first we create a post (or you can retrieve it from the database and then replicate it)
+    $post = Post::create([
+        'title' => 'How To Learn Laravel',
+        'likes' => 100,
+        'views' => 1000,
+        'user_id' => 1,
+    ]);
+    // replicated instance of the post with new data
+    // replicate() will create a new instance of the post with the same data as the original post
+    // important replicate([columns]) columns are the columns we don't want to change,must columns have default value in migrations file of table to work
+    // fill() will fill the new instance with the data we want to change
+    // save() will save the new instance to the database
+    $post_v2 = $post->replicate()->fill([
+        'title' => 'How To Learn Laravel 2',
+        'likes' => 0,
+        'views' => 0,
+        'user_id' => 1,
+    ]);
     /*
-        php artisan model:prune  used to delete old post based on query return form prunable method in Post model
-        php artisan model:prune --pretend used to see how many records will be deleted
-        can run this command in terminal, or using Artisan class, or in crone jobs in server in production mode
+    $post_v2 = $post->replicate(['likes'])->fill([
+        'title' => 'How To Learn Laravel 2',
+        'views' => 0,
+        'user_id' => 1,
+    ]);
     */
-    // Artisan::call(command, [options]);
-    // Artisan::call('model:prune', ['--model' => Post::class, '--pretend' => true]);
-    // important: pruning run hooks (deleting,deleted,pruning) in post model
-    Artisan::call('model:prune'); // will delete old post based on query return form prunable method in Post model when hit route
+    $post_v2->save();
 });

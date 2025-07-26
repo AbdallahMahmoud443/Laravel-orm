@@ -2,21 +2,18 @@
 
 use App\Models\Post;
 use App\Models\User;
-
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    // title: soft delete
-    // description: soft delete is a way to delete a record from the database but not permanently. The record is still in the database but marked as deleted. This is useful when you want to restore the record later.
-    // to soft delete a record, you can use the delete() method on the model instance. For example:
-    //  $post = Post::find(1)->delete(); // soft delete the post with id 1, deleted_at will be set to the current timestamp
-    //---------------------------------------//
-    // to restore a soft deleted record, you can use the restore() method on the model instance. For example:
-    // important:onlyTrashed() used for get record with deleted_at,withTrashed() used for get records with deleted_at and active
-    // $post = Post::onlyTrashed()->find(1)->restore(); // restore the post with id 1, deleted_at will be set to null
-    // dump($post); // return true
-    //---------------------------------------//
-    // to permanently delete a soft deleted record, you can use the forceDelete() method on the model instance. For example:
-    // $post = Post::onlyTrashed()->find(1)->forceDelete(); // permanently delete the post with id 1, the record will be removed from the database
-    // dump($post); // return true
+    // finally to run pruning functionality we need to run this command in terminal
+    /*
+        php artisan model:prune  used to delete old post based on query return form prunable method in Post model
+        php artisan model:prune --pretend used to see how many records will be deleted
+        can run this command in terminal, or using Artisan class, or in crone jobs in server in production mode
+    */
+    // Artisan::call(command, [options]);
+    // Artisan::call('model:prune', ['--model' => Post::class, '--pretend' => true]);
+    // important: pruning run hooks (deleting,deleted,pruning) in post model
+    Artisan::call('model:prune'); // will delete old post based on query return form prunable method in Post model when hit route
 });

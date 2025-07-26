@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Log;
 
@@ -10,8 +12,11 @@ use Illuminate\Support\Facades\Log;
 
 class Post extends BaseModel
 {
-    //
-    use HasFactory, SoftDeletes; // should used SoftDeletes trait to soft delete
+    // title: pruning models
+    // description: pruning is a way to delete old records from the database
+    // first,should used SoftDeletes trait to soft delete to work with soft delete
+    // first,should used Prunable trait  to work with prune functionalities
+    use HasFactory, SoftDeletes, Prunable;
 
 
     // defined relationships
@@ -30,5 +35,17 @@ class Post extends BaseModel
         static::deleted(function (Post $post) {
             Log::info("Post has been deleted,it's id is " . $post->id);
         });
+    }
+    // prunable method to define which records should be pruned
+    public function prunable(): Builder
+    {
+        // delete all posts that are older than a month
+        return static::where('created_at', '<=', now()->subMonth());
+    }
+    // Prepare the model for pruning. (same as hooks but for prunable trait)
+    protected function pruning()
+    {
+        // usage example: delete all comments related to the post (run before pruning post)
+        Log::info("Post is being pruned,it's id is " . $this->id);
     }
 }

@@ -6,37 +6,28 @@ use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    // title: lazy Collection
-    // In Laravel ORM, both lazy() and cursor() methods are used for memory-efficient processing of large datasets, but they work differently.
-    // description: lazy collection is a collection that is not loaded into memory until it is needed. This can be useful for performance optimization, especially when dealing with large amounts of data.
-    //Eager loading is a way to load all the related data at once, while lazy loading is a way to load the related data only when it is needed.
-    //hint: lazy collection is useful for performance optimization, especially when dealing with large amounts of data.
-    //hint:lazy collection is also useful for reducing the number of database queries, which can improve the performance of the application.
-    //hint: lazy collection is also useful for improving the readability and maintainability of the code.
-    //hint:lazy collection is also useful for reducing the risk of errors, such as missing related data.
-    //$posts = Post::all(); // all() method returns a collection of all the posts at once is cause problems with large amount of data and can lead to performance issues.
-    //---------------------------------------------------//
-    // hint:The lazy(checks) method retrieves records in chunks and returns a LazyCollection. It's designed to handle large datasets without loading all records into memory at once.
-    // case: print large amount of posts, every post print then remove from memory, so we can use lazy() method to load the posts one by one and print them. this lead to performance optimization and reduce the memory usage.
-    // $posts = Post::lazy();
-    //---------------------------------------------------//
-    // hint: cursor() method uses a database cursor to retrieve records one by one. It returns a Generator and is more memory-efficient than lazy() for very large datasets.
-    $posts = Post::cursor();
-    //---------------------------------------------------//
-    // lazy() vs cursor()
-    /*
-    Use lazy() when:
-        -You need Laravel Collection methods
-        -Working with medium to large datasets
-        -You want to process data in manageable chunks
-        -You need to perform operations that benefit from batching
-    Use cursor() when:
-        -Working with very large datasets
-        -Memory usage is critical
-        -You're doing simple iteration without complex collection operations
-        -You want the most memory-efficient solution
-
-        Both methods are excellent for avoiding memory exhaustion when dealing with large datasets, and the choice between them depends on your specific use case and performance requirements.
-     */
-    return view('welcome', get_defined_vars());
+    // title: Deleting Methods in Laravel delete(), destroy(), truncate()
+    // hint: delete() is used to delete a single record and returns boolean value in case of deleting one record and number of deleted elements in case of deleting multiple records,
+    // delete single record used by delete() method
+    // $is_deleted = Post::find(7)->delete(); // first should catch the record and then delete it
+    //dump($is_deleted); // return true if deleted successfully,false if not deleted
+    // delete multiple records used by delete() method
+    // $is_deleted = Post::whereIn('id', [8, 9])->delete();
+    //dump($is_deleted); // return count of deleted elements, if not deleted return 0
+    //-------------------------------------------------------------------//
+    // hint: destroy() is used to delete single or multiple records,and returns number of deleted elements in both cases, return 0 if element not deleted  and it doesn't need to call find() method to delete a record
+    // delete single record used by destroy() method is static method
+    // $is_deleted = Post::destroy(10); // delete record with id 1
+    // dump($is_deleted); // return 1 if deleted successfully,0 if not deleted
+    // delete multiple records used by destroy() method
+    //$is_deleted = Post::destroy([11, 12]); // delete records with id 5 and 6
+    // dump($is_deleted); // return 2 if deleted successfully,0 if not deleted
+    //-------------------------------------------------------------------//
+    // important : delete() vs destroy() with delete hooks
+    // delete() work with delete hooks in case of delete single record,but in case of delete multiple records it doesn't work with delete hooks
+    // destroy() work with delete hooks in case of delete single record and multiple records
+    //-------------------------------------------------------------------//
+    // hint: truncate() is used to delete all records (clean table), but it doesn't work with delete
+    // $is_truncated = Post::truncate();
+    // dump($is_truncated); // return eloquent builder instance
 });

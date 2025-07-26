@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Log;
@@ -12,11 +13,10 @@ use Illuminate\Support\Facades\Log;
 
 class Post extends BaseModel
 {
-    // title: pruning models
-    // description: pruning is a way to delete old records from the database
-    // first,should used SoftDeletes trait to soft delete to work with soft delete
-    // first,should used Prunable trait  to work with prune functionalities
-    use HasFactory, SoftDeletes, Prunable;
+    // title: prunable vs mass prunable
+    // description: MassPrunable is a trait that provides a convenient way to mass delete records that are no longer needed.
+    // important MassPrunable not work with pruning method, prunable work with pruning method
+    use HasFactory, SoftDeletes, MassPrunable;
 
 
     // defined relationships

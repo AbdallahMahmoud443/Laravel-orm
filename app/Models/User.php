@@ -4,6 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Models\Scopes\UserActiveScope;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -17,6 +19,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 
+
+// to defined global scope called UserActiveScope, should write it in User model (you may applied more than one global scope to user model) by same way (there are some alternatives ways to defined global scope)
+// #[ScopedBy(UserActiveScope::class)] // important to add scope to user model (new way)
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -54,17 +59,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Post::class); // one to many
     }
-    // defined local scope called premium users with deposit >= 5000
-    // this is used to  filter users with deposit >=
-    // should start with scope and then the name of the scope
-    public function scopePremium(Builder $query) // $query is the query builder
+
+    public static function booted(): void
     {
-        $query->where('deposit', '>=', 5000);
-    }
-    // local scope defined to get admins (custom local scope)
-    public function scopeType(Builder $query, string $type = 'user')
-    {
-        $user_type = $type == 'user' ? 0 : 1;
-        $query->where('is_admin', $user_type);
+        // important second way to defined global scope
+        static::addGlobalScope(new UserActiveScope);
     }
 }

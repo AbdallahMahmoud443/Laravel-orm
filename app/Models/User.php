@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+#[ScopedBy(UserActiveScope::class)]
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -55,7 +56,7 @@ class User extends Authenticatable
     {
         // hint: defined Anonymous Global scope function (run automatically with any query related to User)
         static::addGlobalScope('activeUser', function (Builder $builder) {
-            $builder->where('deposit', '>=', 1000)->where('withdraw', '<=', 3000);
+            $builder->where('is_admin', 1);
         });
     }
 }

@@ -10,18 +10,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
-
-
-
-
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-
-
-// to defined global scope called UserActiveScope, should write it in User model (you may applied more than one global scope to user model) by same way (there are some alternatives ways to defined global scope)
-// #[ScopedBy(UserActiveScope::class)] // important to add scope to user model (new way)
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -62,7 +53,9 @@ class User extends Authenticatable
 
     public static function booted(): void
     {
-        // important second way to defined global scope
-        static::addGlobalScope(new UserActiveScope);
+        // hint: defined Anonymous Global scope function (run automatically with any query related to User)
+        static::addGlobalScope('activeUser', function (Builder $builder) {
+            $builder->where('deposit', '>=', 1000)->where('withdraw', '<=', 3000);
+        });
     }
 }

@@ -22,4 +22,5 @@ class Post extends BaseModel
     {
         return $this->belongsTo(User::class); // post belongs to user
     }
+    
 }

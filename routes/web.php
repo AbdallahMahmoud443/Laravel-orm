@@ -8,10 +8,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     // should create user to dispatch events closures related with this operation
+    // this will trigger UserCreated event related with this user Model
     $user = User::create([
-        'name' => 'Abdullah',
-        'email' => 'Abdullah@doe.com',
+        'name' => 'Abdullah new',
+        'email' => 'AbdullahNew@doe.com',
         'password' => bcrypt('123456')
     ]);
-    
+
+    // this will trigger UserDeleted event related with this user Model
+    User::find(12)->delete();
 });

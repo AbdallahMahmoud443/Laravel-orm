@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 #[ObservedBy(UserObserver::class)] // important attach Observer with model
@@ -55,4 +56,19 @@ class User extends Authenticatable
     }
 
     public static function booted(): void {}
+
+    // custom muting events method
+    /* public static function createQuietly(array $attributes)
+    {
+        static::withoutEvents(function () use ($attributes) {
+            static::create($attributes);
+        });
+    }*/
+    // second way
+    public static function createQuietly(array $attributes)
+    {
+        $user = new static($attributes);
+        $user->password = Hash::make($attributes['password']);
+        $user->saveQuietly();
+    }
 }

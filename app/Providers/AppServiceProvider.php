@@ -23,15 +23,5 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
-    {
-        //
-        // make listener for events (simple way)
-        Event::listen(function (UserCreated $event) {
-            Log::info('User created and it is id = ' . $event->user->id);
-        });
-        Event::listen(function (UserDeleted $event) {
-            Log::info('User deleted and it is id = ' . $event->user->id);
-        });
-    }
+    public function boot(): void {}
 }

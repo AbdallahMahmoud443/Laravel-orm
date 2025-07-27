@@ -12,8 +12,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Log;
 
-#[ScopedBy(UserActiveScope::class)]
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -54,9 +54,19 @@ class User extends Authenticatable
 
     public static function booted(): void
     {
-        // hint: defined Anonymous Global scope function (run automatically with any query related to User)
-        static::addGlobalScope('activeUser', function (Builder $builder) {
-            $builder->where('is_admin', 1);
+        // defined Events using Closures in the boot method see documentations for more info
+        // there are some Closures related to models like (retrieved, creating, created, updating, updated, saving, saved, deleting, deleted, forceDeleted)
+        // every closures end with ing this mean the event is triggered before the action happens
+        // every closures end with ed this mean the event is triggered after the action happens
+        // example: creating is triggered before the user is created
+        static::creating(function ($user) {
+            // do something
+            Log::info('Creating user with id is' . $user->id); // id not appear because the user is not created yet
+        });
+        // example: created is triggered after the user is created
+        static::created(function ($user) {
+            // do something
+            Log::info('Created user with id is' . $user->id); // id appear because the user is created
         });
     }
 }

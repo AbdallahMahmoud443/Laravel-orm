@@ -42,4 +42,14 @@ class Post extends BaseModel
     {
         return $this->morphMany(Review::class, 'reviewable');
     }
+    // define polymorphic has one  of many
+    public function latestReview()
+    {
+        // is same as has one of many normal relationship
+        // return $this->morphOne(Review::class, 'reviewable')->latestOfMany();
+        // return $this->morphOne(Review::class, 'reviewable')->oldestOfMany();
+        // return $this->morphOne(Review::class, 'reviewable')->ofMany('id', 'max');
+        // return $this->morphOne(Review::class, 'reviewable')->ofMany('id', 'min');
+        return $this->review()->one()->ofMany('id', 'max');
+    }
 }

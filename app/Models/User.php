@@ -61,11 +61,6 @@ class User extends Authenticatable
     // defined has many through relationship
     public function comments()
     {
-        // first way of define has many through relationship
-        // return $this->hasManyThrough(Comment::class, Post::class);
-        // second way of define has many through relationship
-        // return $this->through('posts')->has('comments');
-        // third way of define has many through relationship
         return $this->throughPosts()->hasComments();
     }
 }

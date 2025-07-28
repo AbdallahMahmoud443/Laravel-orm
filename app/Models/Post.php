@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Log;
-
-
+use PDO;
 
 class Post extends BaseModel
 {
@@ -25,5 +24,12 @@ class Post extends BaseModel
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function tags()
+    {
+        // if you not care about naming conventions
+        //belongsToMany(Model,post_tag,tag_id,post_id)
+        return $this->belongsToMany(Tag::class);
     }
 }

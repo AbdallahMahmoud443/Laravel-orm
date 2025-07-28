@@ -12,4 +12,8 @@ class Video extends Model
     {
         return $this->morphMany(Review::class, 'reviewable');
     }
+    public function types()
+    {
+        return $this->morphToMany(Type::class, 'typeable'); // morphToMany(modelName,relationName)
+    }
 }

@@ -28,8 +28,6 @@ class Post extends BaseModel
 
     public function tags()
     {
-        // if you not care about naming conventions
-        //belongsToMany(Model,post_tag,tag_id,post_id)
         return $this->belongsToMany(Tag::class);
     }
     // define polymorphic one to one
@@ -45,11 +43,10 @@ class Post extends BaseModel
     // define polymorphic has one  of many
     public function latestReview()
     {
-        // is same as has one of many normal relationship
-        // return $this->morphOne(Review::class, 'reviewable')->latestOfMany();
-        // return $this->morphOne(Review::class, 'reviewable')->oldestOfMany();
-        // return $this->morphOne(Review::class, 'reviewable')->ofMany('id', 'max');
-        // return $this->morphOne(Review::class, 'reviewable')->ofMany('id', 'min');
         return $this->review()->one()->ofMany('id', 'max');
+    }
+    public function types()
+    {
+        return $this->morphToMany(Type::class, 'typeable'); // morphToMany(modelName,relationName)
     }
 }

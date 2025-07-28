@@ -54,4 +54,20 @@ class User extends Authenticatable
     {
         return $this->hasOne(Phone::class); // one to one
     }
+    //defined has one of many relationship (second way)
+    public function latestPost()
+    {
+        // there are many of ways to define this relationship
+        // return $this->posts()->orderBy('id', 'desc')->first();
+        //---------------------------------------------------------------//
+        // latestOfMany() arrange instance based on created_at by default
+        // latestOfMany(column) arrange instance based on column
+        // return $this->hasOne(Post::class)->latestOfMany('likes'); // latestOfMany() vs oldestOfMany()
+        //---------------------------------------------------------------//
+        // ofMany(column, max or min) arrange instance based on created_at by default
+        // return $this->hasOne(Post::class)->ofMany('likes', 'min');
+        //---------------------------------------------------------------//
+        // one() Convert the relationship to a "has one" relationship.
+        // return $this->posts()->one()->ofMany('likes', 'max');
+    }
 }

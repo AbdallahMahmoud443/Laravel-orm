@@ -7,16 +7,18 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    // title: Querying belongs to relationships
-    // case return posts of specific user's id (first way)
-    // $posts = Post::where('user_id', 2)->get();
-    // case return posts of specific user's id (Second way) using whereBelongsTo(instance of user)
-    // whereBelongsTo($user); work with belongTo Relationship
-    // hint: return posts for single user
-    // $user = User::find(2);
-    // $posts = Post::whereBelongsTo($user)->get();
-    // hint: return posts for multiple user
-    $users = User::whereIn('id', [2, 3, 4])->get();
-    $posts = Post::whereBelongsTo($users)->get(); // return posts for single user
-    dump($posts);
+    // title: has one of Many Relationship
+    // description: has one of Many Relationship is used when I need to retrieve a single record from a related table based on a condition. In this example, we will retrieve the first  newest post that relation with  given user.
+    // case : if i need to return all posts of user with id 2
+    // $post = User::find(2)->posts; // return all posts of user with id 2
+    // case : if i need to return the first post of user with id 2
+    // (First way)
+    //$post = User::find(2)->posts()->first(); // return the first post of user with id 2
+    // case : if i need to return the newest post of user with id 2
+    // $post = User::find(2)->posts()->latest()->first(); // return the newest post of user with id 2
+    // case : if i need to return the oldest post of user with id 2
+    // $post = User::find(2)->posts()->oldest()->first(); // return the oldest post of user with id 2
+    //---------------------------------------------------//
+    $post = User::find(2)->latestPost()->get(); // return the newest post of user with id
+    dump($post);
 });

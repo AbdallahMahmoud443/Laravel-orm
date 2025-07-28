@@ -7,14 +7,13 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    // title:Retrieving relation rule
-    /**
-     *  case of returned Relation
-     * instance->relation->property =>  is called Dynamic Property
-     * instance->relation()->anyChainOfModelOperations => is Query Builder Collection
-     */
-    // Example: return sum of (withdraw + deposit) of user has specific phone number it's id = 2
-    $phone = App\Models\Phone::find(2);
-    $sum_operations = $phone->user()->sum(DB::raw('withdraw + deposit'));
-    dump($sum_operations);
+    // title:one to many relationship user and posts
+    // Example: return all posts of a user has id = 9
+    $posts = User::find(9)->posts;
+    // Example: return all posts titles orderby likes  of a user has id = 9
+    $posts = user::find(9)->posts()->orderBy('likes', 'desc')->pluck('title');
+    // Example: return which User written specific post has id = 1
+    $user = App\Models\Post::find(1)->user->name;
+    
+    dump($user);
 });

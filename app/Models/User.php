@@ -4,20 +4,14 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-use App\Models\Scopes\UserActiveScope;
-use App\Observers\UserObserver;
-use Illuminate\Database\Eloquent\Attributes\ObservedBy;
-use Illuminate\Database\Eloquent\Attributes\ScopedBy;
-use Illuminate\Database\Eloquent\Builder;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 
-#[ObservedBy(UserObserver::class)] // important attach Observer with model
+
+
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -49,26 +43,15 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
+    //  define All Relations Here
+    // (One-to-many)
     public function posts()
     {
         return $this->hasMany(Post::class); // one to many
     }
-
-    public static function booted(): void {}
-
-    // custom muting events method
-    /* public static function createQuietly(array $attributes)
+    // (One-to-One)
+    public function phone()
     {
-        static::withoutEvents(function () use ($attributes) {
-            static::create($attributes);
-        });
-    }*/
-    // second way
-    public static function createQuietly(array $attributes)
-    {
-        $user = new static($attributes);
-        $user->password = Hash::make($attributes['password']);
-        $user->saveQuietly();
+        return $this->hasOne(Phone::class); // one to one
     }
 }

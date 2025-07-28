@@ -22,4 +22,14 @@ Route::get('/', function () {
     // case 3 : return post from image id = 1
     $user = App\Models\Image::find(1)->imageable; // return Model Instance based on the type of the model
     dump($user->name);
+    /*
+        standard naming convention of polymorphic relation
+        1- In Migrations file two column related of relation should defined as
+        -tableName + able_id
+        -tableName + able_type
+        2- In Model file should defined as
+        method name: tableName + able() that return morphTo() relation
+        3- In related model should defined as
+        method name: name() that return morphOne() or morphMany()relation
+    */
 });

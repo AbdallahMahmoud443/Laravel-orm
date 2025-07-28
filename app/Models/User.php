@@ -63,4 +63,10 @@ class User extends Authenticatable
     {
         return $this->throughPosts()->hasComments();
     }
+    // define polymorphic one to one
+    public function image()
+    {
+        // hint morphOne() is a polymorphic one to one relationship
+        return $this->morphOne(Image::class, 'imageable'); // morphOne(modelName,relationName)
+    }
 }

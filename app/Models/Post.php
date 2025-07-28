@@ -32,4 +32,9 @@ class Post extends BaseModel
         //belongsToMany(Model,post_tag,tag_id,post_id)
         return $this->belongsToMany(Tag::class);
     }
+    // define polymorphic one to one
+    public function image()
+    {
+        return $this->morphOne(Image::class, 'imageable'); // morphOne(modelName,relationName)
+    }
 }

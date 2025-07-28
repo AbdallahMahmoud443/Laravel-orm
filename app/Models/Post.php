@@ -37,4 +37,9 @@ class Post extends BaseModel
     {
         return $this->morphOne(Image::class, 'imageable'); // morphOne(modelName,relationName)
     }
+    // defined one-to-many polymorphic relationship
+    public function review()
+    {
+        return $this->morphMany(Review::class, 'reviewable');
+    }
 }

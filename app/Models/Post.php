@@ -20,7 +20,9 @@ class Post extends BaseModel
     // defined relationships
     public function user()
     {
-        return $this->belongsTo(User::class); // post belongs to user
+        // with default behavior
+        // withDefaults() is used to set default values for the relationship
+        // work only with method belongTo
+        return $this->belongsTo(User::class)->withDefault(['name' => 'unKnown User']);
     }
-    
 }

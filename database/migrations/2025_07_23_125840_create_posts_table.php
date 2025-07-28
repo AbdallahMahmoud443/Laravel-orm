@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            // put onDelete('setNull') to prevent foreign key constraint errors
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('SET NULL');
             $table->string('title');
             $table->integer('likes');
             $table->integer('views');

@@ -7,13 +7,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    // title:one to many relationship user and posts
-    // Example: return all posts of a user has id = 9
-    $posts = User::find(9)->posts;
-    // Example: return all posts titles orderby likes  of a user has id = 9
-    $posts = user::find(9)->posts()->orderBy('likes', 'desc')->pluck('title');
-    // Example: return which User written specific post has id = 1
-    $user = App\Models\Post::find(1)->user->name;
-    
-    dump($user);
+    // title: with default behavior
+    // case:  will return all post then,it's user has been deleted how handle this case
+    $posts = Post::find(10);
+    // return user has been written this post,but user has been deleted
+    $user = $posts->user;
+    dump($user->name); // unKnown User this will return when write withDefault() with in relationship of post
 });

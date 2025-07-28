@@ -43,7 +43,6 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    //  define All Relations Here
     // (One-to-many)
     public function posts()
     {
@@ -54,20 +53,18 @@ class User extends Authenticatable
     {
         return $this->hasOne(Phone::class); // one to one
     }
-    //defined has one of many relationship (second way)
-    public function latestPost()
+    // defined has one through relationship
+    public function phoneProvider()
     {
-        // there are many of ways to define this relationship
-        // return $this->posts()->orderBy('id', 'desc')->first();
-        //---------------------------------------------------------------//
-        // latestOfMany() arrange instance based on created_at by default
-        // latestOfMany(column) arrange instance based on column
-        // return $this->hasOne(Post::class)->latestOfMany('likes'); // latestOfMany() vs oldestOfMany()
-        //---------------------------------------------------------------//
-        // ofMany(column, max or min) arrange instance based on created_at by default
-        // return $this->hasOne(Post::class)->ofMany('likes', 'min');
-        //---------------------------------------------------------------//
-        // one() Convert the relationship to a "has one" relationship.
-        // return $this->posts()->one()->ofMany('likes', 'max');
+        // hasOneThrough(model, intermediate model) (first way)
+        // return $this->hasOneThrough(PhoneProvider::class, Phone::class);
+        //----------------------------------------------------------//
+        // through(nameOfRelationship in user model) (second way) has(nameOfRelationship in phone model)
+        // return $this->through('phone')->has('provider'); // second way
+        //----------------------------------------------------//
+        // third way
+        //throughNameOfRelationship in user model
+        // throughNameOfRelationship in phone model
+        return $this->throughPhone()->hasProvider();
     }
 }

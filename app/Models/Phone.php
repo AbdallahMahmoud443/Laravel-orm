@@ -14,4 +14,8 @@ class Phone extends Model
         // belongsTo(class,foreignKey,primaryKey); if you don't care about naming conventions
         return $this->belongsTo(User::class);
     }
+    public function provider()
+    {
+        return $this->hasOne(PhoneProvider::class);
+    }
 }

@@ -7,10 +7,16 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    // title: with default behavior
-    // case:  will return all post then,it's user has been deleted how handle this case
-    $posts = Post::find(10);
-    // return user has been written this post,but user has been deleted
-    $user = $posts->user;
-    dump($user->name); // unKnown User this will return when write withDefault() with in relationship of post
+    // title: Querying belongs to relationships
+    // case return posts of specific user's id (first way)
+    // $posts = Post::where('user_id', 2)->get();
+    // case return posts of specific user's id (Second way) using whereBelongsTo(instance of user)
+    // whereBelongsTo($user); work with belongTo Relationship
+    // hint: return posts for single user
+    // $user = User::find(2);
+    // $posts = Post::whereBelongsTo($user)->get();
+    // hint: return posts for multiple user
+    $users = User::whereIn('id', [2, 3, 4])->get();
+    $posts = Post::whereBelongsTo($users)->get(); // return posts for single user
+    dump($posts);
 });

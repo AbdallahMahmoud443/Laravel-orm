@@ -22,4 +22,8 @@ class Post extends BaseModel
     {
         return $this->belongsTo(User::class)->withDefault(['name' => 'unKnown User']);
     }
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

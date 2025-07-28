@@ -56,15 +56,16 @@ class User extends Authenticatable
     // defined has one through relationship
     public function phoneProvider()
     {
-        // hasOneThrough(model, intermediate model) (first way)
-        // return $this->hasOneThrough(PhoneProvider::class, Phone::class);
-        //----------------------------------------------------------//
-        // through(nameOfRelationship in user model) (second way) has(nameOfRelationship in phone model)
-        // return $this->through('phone')->has('provider'); // second way
-        //----------------------------------------------------//
-        // third way
-        //throughNameOfRelationship in user model
-        // throughNameOfRelationship in phone model
         return $this->throughPhone()->hasProvider();
+    }
+    // defined has many through relationship
+    public function comments()
+    {
+        // first way of define has many through relationship
+        // return $this->hasManyThrough(Comment::class, Post::class);
+        // second way of define has many through relationship
+        // return $this->through('posts')->has('comments');
+        // third way of define has many through relationship
+        return $this->throughPosts()->hasComments();
     }
 }

@@ -4,9 +4,17 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    // title: Eloquent Relationships Operations (Prevent lazy loading)
-    // description: lazy loading is when you access a relationship property on an Eloquent model, Laravel will automatically load the related data from the database.
-    // prevent lazy loading from any serviceProvider
-    $posts = \App\Models\Post::get(); // this line will throw exception because of lazy loading is disabled
-    return view('welcome', compact('posts'));
+    // title: Eloquent Relationships Operations (associate() & disassociate())
+    // work only with belongTo() relationship
+    // hint: associate() is to update the foreign key of the related model
+
+    $post = App\Models\Post::find(1);
+    $post->user()->associate(App\Models\User::find(2));
+    $post->save();
+    //-----------------------------------------------------------//
+    // hint: disassociate() is to remove the foreign key of the related model
+    $post = App\Models\Post::find(1);
+    $post->user()->disassociate(); // make user_id = null
+    $post->save();
+    //-----------------------------------------------------------//
 });

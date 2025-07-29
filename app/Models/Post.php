@@ -15,7 +15,7 @@ class Post extends BaseModel
 
     use HasFactory, SoftDeletes;
 
-   // protected $with = ['user']; // load user as eager loading
+    // protected $with = ['user']; // load user as eager loading
     // defined relationships
     public function user()
     {
@@ -28,7 +28,7 @@ class Post extends BaseModel
 
     public function tags()
     {
-        return $this->belongsToMany(Tag::class);
+        return $this->belongsToMany(Tag::class)->withPivot('created_at');
     }
     // define polymorphic one to one
     public function image()

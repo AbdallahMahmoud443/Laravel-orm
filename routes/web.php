@@ -4,14 +4,21 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    // title: Eloquent Relationships Operations (attach() & detach()) work with many to many relationships
-    // hint:attach() method is used to attach a record to the relationship
-    $post = App\Models\Post::find(1);
-    // $post->tags()->attach(1); // attach a tag to a post
-    // $post->tags()->attach([1, 2, 3]); // attach multiple tags to a post
-    $post->tags()->attach([1, 2], ['created_at' => now(), 'updated_at' => now()]); // attach multiple tags to a post with custom data in pivot table
-    //------------------------------------------------------//
-    // hint:detach() method is used to detach a record to the relationship
-    // $post->tags()->detach(1); // detach a tag to a post
-    // $post->tags()->detach([2, 3]); // attach multiple tags to a post
+    // title: Eloquent Relationships Operations (sync() & toggle()) work with many to many relationships
+    // hint:sync() method is used to sync the pivot table with the given ids
+    // hint:toggle() method is used to toggle the given ids in the pivot table
+    $post = App\Models\Post::find(2);
+    // $post->tags()->sync([1, 2]); // sync the pivot table with the given ids (update the pivot table with given ids)
+    // with pivot table data
+    // first Way
+    //  $post->tags()->sync([1 => ['created_at' => now()], 2 => ['created_at' => now()]]);
+    // second Way
+    // $post->tags()->syncWithPivotValues([1, 2], ['created_at' => now()]);
+    // important case if you want to sync on id = 1 and any additional ids don't remove it
+    // syncWithoutDetaching() is used to sync the pivot table with the given ids without removing the existing ids
+    $post->tags()->syncWithoutDetaching([1]);
+    //--------------------------------------------------//
+    // $post->tags()->toggle([1, 2]); // toggle the given ids in the pivot table (add or remove the given ids from the pivot table)
+    // with pivot table data
+    // $post->tags()->toggle([1 => ['created_at' => now()], 2 => ['created_at' => now()]]);
 });

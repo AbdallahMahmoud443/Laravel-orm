@@ -4,14 +4,13 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    // title: Eloquent Relationships Operations (Inline Existence Queries) => (see documentation for more info)
-    // description: Laravel provides a convenient way to check if a relationship exists without actually loading it into memory using the exists method. Inline Existence Queries is a feature that allows you to perform existence checks on relationships directly in your query, without the need for additional queries or conditional statements.
-    // whereRelation(relation,column,operator,value)
-    // case return all users who have posts with title containing 'learn'
-    $users = App\Models\User::whereRelation('posts', 'title', 'like', '%learn%')->get();
+    // title: Eloquent Relationships Operations (Aggregating related models)
+    // withCount() is a convenient method for aggregating the results of a relationship count query into the resulting models.
+    // case if i need to return all users with count of posts
+    // withCount(relation=>callback)
+    $users = App\Models\User::withCount('posts as total_number_of_posts')->get();
     dump($users);
-    //-----------------------------------------------------------------------------------//
-    // case return all users who have posts with likes greater than 200
-    $users = App\Models\User::whereRelation('posts', 'likes', '>', 200)->get();
+    // case if i need to return all users with count of posts and comments
+    $users = App\Models\User::withCount(['posts', 'comments'])->get();
     dump($users);
 });

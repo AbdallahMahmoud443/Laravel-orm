@@ -4,7 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-
+use App\Casts\UserDepositCast;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -74,6 +74,7 @@ class User extends Authenticatable
             'password' => 'hashed',
             // hint: I will cast is_admin attribute to boolean
             'is_admin' => 'boolean',
+            'deposit' => UserDepositCast::class, // defined custom casting
         ];
     }
 }

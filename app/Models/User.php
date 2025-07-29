@@ -82,10 +82,21 @@ class User extends Authenticatable
 
     // do change of returned value of exits property with same name of property
     // second way
-    public function name(): Attribute
+    /* public function name(): Attribute
     { // name is exits property
         return Attribute::make(get: fn($v) => strtolower($v));
-    }
-
+    }*/
     // Mutators is used to set the value of a property when it is set.
+    // first way (Mutator only)
+    /*
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = strtolower($value);
+    }
+    */
+    // second way (Accessor & Mutator)
+    public function name(): Attribute
+    { // name is exits property
+        return Attribute::make(get: fn($v) => strtolower($v), set: fn($v) => strtolower($v));
+    }
 }

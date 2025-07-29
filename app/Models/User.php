@@ -32,18 +32,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+
     // (One-to-many)
     public function posts()
     {
@@ -70,33 +59,21 @@ class User extends Authenticatable
         // hint morphOne() is a polymorphic one to one relationship
         return $this->morphOne(Image::class, 'imageable'); // morphOne(modelName,relationName)
     }
-
-    // defined Accessors & Mutators
-    // Accessors is used to get the value of a property when it is accessed.
-    // make new Accessor called FullName to get the full name of the user. in lower format
-    // first way
-    /*   public function getFullNameAttribute()
+    // casting is used to convert the (data type of a column) to a specific type
+    // casting work as a getter and setter for attributes
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
     {
-        return strtolower($this->name);
-    }*/
-
-    // do change of returned value of exits property with same name of property
-    // second way
-    /* public function name(): Attribute
-    { // name is exits property
-        return Attribute::make(get: fn($v) => strtolower($v));
-    }*/
-    // Mutators is used to set the value of a property when it is set.
-    // first way (Mutator only)
-    /*
-    public function setNameAttribute($value)
-    {
-        $this->attributes['name'] = strtolower($value);
-    }
-    */
-    // second way (Accessor & Mutator)
-    public function name(): Attribute
-    { // name is exits property
-        return Attribute::make(get: fn($v) => strtolower($v), set: fn($v) => strtolower($v));
+        // see documentation for more details about casting type
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+            // hint: I will cast is_admin attribute to boolean
+            'is_admin' => 'boolean',
+        ];
     }
 }

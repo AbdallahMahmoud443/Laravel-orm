@@ -16,11 +16,13 @@
         <h1>Posts</h1>
         <div class="row">
             @foreach ($posts as $post)
-                <div class="col-md-4">
+                <div class="col-md-3 m-2">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">{{ $post->title }}</h5>
+                            <p class="card-text">{{ $post->user->name }}</p>
                             <p class="card-text">{{ $post->likes }}</p>
+
                             <a href="#" class="btn btn-primary">View</a>
                         </div>
                     </div>

@@ -4,21 +4,20 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    // title: Eloquent Relationships Operations (Deferred aggregation loading)
-    // description : Deferred aggregation in Laravel refers to performing aggregate queries on already retrieved Eloquent models, rather than executing a separate database query for the aggregation. This is particularly useful when you have a model instance and want to calculate an aggregate value (like a count, sum, or average) based on its related data without needing to fetch the entire relationship collection first.
-    // case : return count of posts foreach users
-    $user = App\Models\User::find(3);
-    // $posts_count =  $user->posts()->count(); // normal Way
-    // $posts_count =  $user->loadCount('posts'); // see documentation for more methods
-    // dump($posts_count);
-    //------------------------------------------------------//
-    // case return max likes of posts foreach users
-    // $posts_max_likes =  $user->loadMax('posts', 'likes');
-    // dump($posts_max_likes);
-    //------------------------------------------------------//
-    // return count of posts it's views greater than 300
-    $posts_count =  $user->loadCount(['posts' => function ($query) {
-        $query->where('views', '>', 300);
-    }]);
-    dump($posts_count);
+    // title: Eloquent Relationships Operations (Eager loading)
+    // description: Eager loading is a way to load all the related models in a single query.
+    // first make query to get all the posts from the database,then for each post we make another query to  get the related user in this case will cause N+1 Problem.
+     $posts = App\Models\Post::get(); // is called (lazy loading) and it will cause N+1 Problem.
+    // to prevent this problem we can use eager loading to load all the related models in a single query. (N+1) use With() method to load the related models in a single query.
+
+    // $posts = App\Models\Post::with('user')->get(); // load users with all posts
+    //--------------------------------------------------------//
+    /*
+    $posts = App\Models\Post::with([
+        'user' => function ($q) {
+            $q->select('id', 'name');
+        }
+    ])->get(); // load users (id,name) with all */
+
+    return view('welcome', compact('posts'));
 });

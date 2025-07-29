@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -69,4 +70,22 @@ class User extends Authenticatable
         // hint morphOne() is a polymorphic one to one relationship
         return $this->morphOne(Image::class, 'imageable'); // morphOne(modelName,relationName)
     }
+
+    // defined Accessors & Mutators
+    // Accessors is used to get the value of a property when it is accessed.
+    // make new Accessor called FullName to get the full name of the user. in lower format
+    // first way
+    /*   public function getFullNameAttribute()
+    {
+        return strtolower($this->name);
+    }*/
+
+    // do change of returned value of exits property with same name of property
+    // second way
+    public function name(): Attribute
+    { // name is exits property
+        return Attribute::make(get: fn($v) => strtolower($v));
+    }
+
+    // Mutators is used to set the value of a property when it is set.
 }

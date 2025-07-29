@@ -14,7 +14,7 @@ class Post extends BaseModel
 {
 
     use HasFactory, SoftDeletes;
-
+    protected $touches = ['user']; // touch user when post is updated
     // protected $with = ['user']; // load user as eager loading
     // defined relationships
     public function user()

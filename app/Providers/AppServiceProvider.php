@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Events\UserCreated;
 use App\Events\UserDeleted;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 
 
@@ -23,5 +24,8 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void {}
+    public function boot(): void
+    {
+        Model::preventLazyLoading(); // prevent lazy loading for all models (throw exception when do lazy loading)
+    }
 }

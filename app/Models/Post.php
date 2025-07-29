@@ -15,7 +15,7 @@ class Post extends BaseModel
 
     use HasFactory, SoftDeletes;
 
-    protected $with = ['user']; // load user as eager loading
+   // protected $with = ['user']; // load user as eager loading
     // defined relationships
     public function user()
     {

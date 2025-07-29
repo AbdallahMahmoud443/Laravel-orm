@@ -4,17 +4,14 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    // title: Eloquent Relationships Operations (associate() & disassociate())
-    // work only with belongTo() relationship
-    // hint: associate() is to update the foreign key of the related model
-
+    // title: Eloquent Relationships Operations (attach() & detach()) work with many to many relationships
+    // hint:attach() method is used to attach a record to the relationship
     $post = App\Models\Post::find(1);
-    $post->user()->associate(App\Models\User::find(2));
-    $post->save();
-    //-----------------------------------------------------------//
-    // hint: disassociate() is to remove the foreign key of the related model
-    $post = App\Models\Post::find(1);
-    $post->user()->disassociate(); // make user_id = null
-    $post->save();
-    //-----------------------------------------------------------//
+    // $post->tags()->attach(1); // attach a tag to a post
+    // $post->tags()->attach([1, 2, 3]); // attach multiple tags to a post
+    $post->tags()->attach([1, 2], ['created_at' => now(), 'updated_at' => now()]); // attach multiple tags to a post with custom data in pivot table
+    //------------------------------------------------------//
+    // hint:detach() method is used to detach a record to the relationship
+    // $post->tags()->detach(1); // detach a tag to a post
+    // $post->tags()->detach([2, 3]); // attach multiple tags to a post
 });

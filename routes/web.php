@@ -4,41 +4,40 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    // title: Eloquent Relationships Operations (save() & create() on relationships)
-    // case if I need create post for user's id = 3
-    $user = App\Models\User::find(3);
-    // this line will create post for user's id = 3 (create() method)
-    /*  $post = $user->posts()->create([
-        'title' => 'Learn javascript',
-        'likes' => 0,
-        'views' => 0,
-    ]);*/
-    //------------------------------------------------//
-    // second way to create instance related to another instance (save() method)
-    /* $post = new App\Models\Post();
-    $post->title = 'Learn Python';
-    $post->likes = 0;
-    $post->views = 0;
-    $user->posts()->save($post); // this line of code will create post for user's id = 3 (save() method)*/
-    //-------------------------------------------------------------//
-    // create multiple posts for user's id = 3 using createMany(arrayOfArrays) method
-    /* $user->posts()->createMany([
-        [
-            'title' => 'Learn PHP',
-            'likes' => 0,
-            'views' => 0,
-        ],
-        [
-            'title' => 'Learn Laravel',
-            'likes' => 0,
-            'views' => 0,
-        ],
-    ]);*/
-    //-------------------------------------------------------------//
-    // create multiple posts for user's id = 3 using saveMany(arrayOfInstances) method
-    $posts = [
-        new App\Models\Post(['title' => 'Learn wordpress', 'likes' => 0, 'views' => 0]),
-        new App\Models\Post(['title' => 'Learn LLM', 'likes' => 0, 'views' => 0]),
-    ];
-    $user->posts()->saveMany($posts);
+    // title: Eloquent Relationships Operations (Querying relation existence & absence)
+    // return users based on condition on relations model
+    //----------------------------------------------------//
+    // hint: has(relation,operator,count) - Checks if the related model exists.
+    // case return all users who have posts
+    $users = App\Models\User::has('posts')->get();
+    dump($users);
+    //----------------------------------------------------//
+    // hint: doesntHave(relation,operator.count) - Checks if the related model does not exist.
+    // case return all users who don't have posts
+    $users = App\Models\User::doesntHave('posts')->get();
+    dump($users);
+    //----------------------------------------------------//
+    // hint: whereHas() - Checks if the related model exists and has a specified relationship.
+    // case return all users who have posts it's view greater than 200
+    $users = App\Models\User::whereHas('posts', function ($query) {
+        $query->where('views', '>', 200);
+    })->get();
+    dump($users);
+    //----------------------------------------------------//
+    // hint: whereDoesntHave() - Checks if the related model does not exist or does not have a specified relationship.
+    // case return all users who have posts it's views don't greater than 200
+    $users = App\Models\User::whereDoesntHave('posts', function ($query) {
+        $query->where('views', '>', 200);
+    })->get();
+    dump($users);
+    //----------------------------------------------------//
+    // hint : work with nested relationship return user based on comments for Example
+    // case return all users who have posts it's comments title contain good
+    $users = App\Models\User::whereHas('posts.comments', function ($query) {
+        $query->where('comment', 'like', '%good%');
+    })->get();
+    dump($users);
+    // case return all users who have posts has comments
+    $users = App\Models\User::has('posts.comments')->get();
+    dump($users);
 });

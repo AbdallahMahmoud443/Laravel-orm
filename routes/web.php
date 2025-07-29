@@ -1,42 +1,23 @@
 <?php
 
-use App\Models\Post;
-use App\Models\Review;
-use App\Models\Scopes\UserActiveScope;
-use App\Models\Tag;
-use App\Models\Type;
-use App\Models\User;
-use App\Models\Video;
-use Illuminate\Support\Facades\DB;
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    // title: polymorphic has many-of-many relationship
-    // description : polymorphic has many-of-many relationship is a type of relationship where a model can belong to many different models and a model can have many different types of relationships with other models. This type of relationship is useful when you want to create a flexible and scalable system that can handle a wide range of relationships between different models.
-    /*
-    // get types of post id = 1
-    $post = Post::find(1);
-    dump($post->types()->pluck('name'));
-    // get types of post id = 2
-    $post = Post::find(2);
-    dump($post->types()->pluck('name'));
-    // get types of video id = 1
-    $video = Video::find(1);
-    dump($video->types()->pluck('name'));
-    // get types of video id = 2
-    $video = Video::find(2);
-    dump($video->types()->pluck('name'));*/
-
-    // get post of type id = 1
-    $posts = Type::find(1)->getPosts()->pluck('title')->toArray();
-    dump($posts);
-    // get post of type id = 2
-    $posts = Type::find(2)->getPosts()->pluck('title')->toArray();
-    dump($posts);
-    // get post of type id = 1
-    $videos = Type::find(1)->getVideos()->pluck('title')->toArray();
-    dump($videos);
-    // get post of type id = 2
-    $videos = Type::find(2)->getVideos()->pluck('title')->toArray();
-    dump($videos);
+    // title: Eloquent Relationships Operations
+    // hint: every eloquent operations we do in single model,we can do it in Relations
+    // important: to do operation on relation,returned relation should be Query builder
+    // case if I need return most recent 2 posts from user id =2
+    // posts() is relation in form of query builder
+    $latest_posts = App\Models\User::find(2)->posts()->latest()->take(2)->get();
+    dump($latest_posts);
+    //case if I need return most views 2 posts from user id = 2
+    $most_views_posts = App\Models\User::find(2)->posts()->orderBy('views', 'desc')->take(2)->get();
+    dump($most_views_posts);
+    // case if I need sum of likes on post related to user id = 2
+    $sum_of_likes = App\Models\User::find(2)->posts()->sum('likes');
+    dump($sum_of_likes);
+    // case if I need posts it's likes greater than 300 for user id = 2
+    $posts_with_likes_greater_than_200 = App\Models\User::find(2)->posts()->where('likes', '>', 300)->get();
+    dump($posts_with_likes_greater_than_200);
 });
